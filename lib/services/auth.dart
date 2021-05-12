@@ -1,7 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_first_steps/models/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? User(uid: user.uid) : null;
+  }
 
   // sing in anon
   Future signInAnon() async {
@@ -13,7 +18,7 @@ class AuthService {
       // wir haben mit result einen user und den stecken wir jetzt in die var user
       FirebaseUser user = result.user;
       // wir returnen den tatsächlichen user, damit mit ihm später gearbeitet werden kann
-      return user;
+      return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       //Wenn wir als anony einloggen und es fehlschlägt, erhalten wir als user NULL und können damit arbeiten
