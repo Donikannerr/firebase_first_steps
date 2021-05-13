@@ -8,6 +8,17 @@ class AuthService {
     return user != null ? User(uid: user.uid) : null;
   }
 
+  // auth change user stream (ob eingeloggt oder nicht usw.)
+  // Wenn immer ein change beim user-status stattfindet, erhalten wir einen FirebaseUser
+  // in den klammern steht btw das, wass wir zurück erhalten beim return. Merke, in den klammernn stand vorher FirebaseUser
+  Stream<User> get user {
+    return _auth.onAuthStateChanged
+        // Wir wollen unseren eigenen User benutzen (uuid), deshalb ändern wir den FirebaseUser in einen user um.
+        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
+        // wir können das auch so machen, dass ist ein einfaches ConvertTo_userFromFirebaseUser(user)
+        .map(_userFromFirebaseUser);
+  }
+
   // sing in anon
   Future signInAnon() async {
     try {
